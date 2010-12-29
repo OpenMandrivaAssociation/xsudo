@@ -1,11 +1,9 @@
-%define distsuffix edm
-
 Summary:        xsudo permit execute X-application with sudo
 Name:           xsudo
 Version:        0.1.0
 Release:        %mkrel 1
 License:        GPLv2+
-Group:          System Environment/Base
+Group:          System/Base
 Source0:        %{name}
 BuildArch:      noarch
 Requires:	sudo
@@ -18,7 +16,7 @@ xsudo permit execute X-application with sudo
 %build
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 mkdir -p ${RPM_BUILD_ROOT}/%{_bindir}
 cp %SOURCE0  ${RPM_BUILD_ROOT}/%{_bindir}/xsudo
@@ -36,4 +34,3 @@ sed -i '/requiretty/s/^Defaults/# Defaults/g' /etc/sudoers
 %defattr(-, root, root, -)
 
 %{_bindir}/xsudo
-
