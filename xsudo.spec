@@ -34,3 +34,15 @@ sed -i '/requiretty/s/^Defaults/# Defaults/g' /etc/sudoers
 %defattr(-, root, root, -)
 
 %{_bindir}/xsudo
+
+%changelog
+* Wed Dec 29 2010 Александр Казанцев <kazancas@mandriva.org> 0.1.0-1mdv2011.0
++ Revision: 625913
+-inital release
+- import xsudo
+
+
+* Tue Nov 9 2010 Alexander Kazancev <kazancas@mandriva.ru> - 0.1.0
+- initial build
+
+

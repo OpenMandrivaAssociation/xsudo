@@ -1,0 +1,8 @@
+#!/bin/sh
+# Скрит запуска X-приложений через sudo
+# Автор - Александр Казанцев <kazancas@mandriva.ru>
+# Скрипт распространяется по лицензии GPL v.3
+
+[ -n "$XAUTHORITY" ] || XAUTHORITY="$HOME/.Xauthority"
+export XAUTHORITY
+exec sudo "$@"
