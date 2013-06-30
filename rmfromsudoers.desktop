@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=RmFromSudoers
+Name[ru]=RmFromSudoers
+Comment=Deleting a user from /etc/sudoers
+Comment[ru]=Удаление пользователя из /etc/sudoers
+GenericName=Deleting a user from /etc/sudoers
+GenericName[ru]=Удаление пользователя из /etc/sudoers
+Exec=rmfromsudoers
+Icon=/usr/share/pixmaps/rmfromsudoers.png
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=System;Utility;X-MandrivaLinux-System-Terminals;

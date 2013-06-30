@@ -1,0 +1,94 @@
+#!/bin/bash
+# Скрипт добавления пользователя в /etc/sudoers
+# Автор - Логинов Алексей <loginov.alex.valer@gmail.com>
+# Скрипт распространяется по лицензии GPL v.3
+
+LANG='en'
+
+#Russian (Русский)
+LOCALE=`export|grep LANG|grep ru`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Украинский (Ukrainian)
+LOCALE=`export|grep LANG|grep uk`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Белорусский (Belarusian)
+LOCALE=`export|grep LANG|grep be`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Башкирский (Bashkir)
+LOCALE=`export|grep LANG|grep ba`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Болгарский (Bulgarian)
+LOCALE=`export|grep LANG|grep bg`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Чеченский (Chechen)
+LOCALE=`export|grep LANG|grep ce`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Церковнославянский (Church Slavic)
+LOCALE=`export|grep LANG|grep cu`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Чувашский (Chuvash)
+LOCALE=`export|grep LANG|grep cv`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Казахский (Kazakh)
+LOCALE=`export|grep LANG|grep kk`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Коми (Komi)
+LOCALE=`export|grep LANG|grep kv`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Молдавский (Moldavian)
+LOCALE=`export|grep LANG|grep mo`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+#Татарский (Tatar)
+LOCALE=`export|grep LANG|grep tt`
+if [ ! "$LOCALE" = "" ]
+then
+   LANG='ru'
+fi
+
+if [ "$LANG" = "ru" ]
+then
+   MES0="Настройка /etc/sudoers для root не требутся."
+else
+   MES0="Configure /etc/sudoers for root not really need."
+fi
+
+if [ "$USER" = "root" ]
+then
+  zenity --info --text "$MES0"
+  exit 0
+fi
+
+beesu -l "sudoers4user $USER add2sudoers $LANG"

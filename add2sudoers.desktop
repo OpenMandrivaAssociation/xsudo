@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Add2sudoers
+Name[ru]=Add2sudoers
+Comment=Adding a user to /etc/sudoers
+Comment[ru]=Добавление пользователя в /etc/sudoers
+GenericName=Adding a user to /etc/sudoers
+GenericName[ru]=Добавление пользователя в /etc/sudoers
+Exec=add2sudoers
+Icon=/usr/share/pixmaps/add2sudoers.png
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=System;Utility;X-MandrivaLinux-System-Terminals;

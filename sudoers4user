@@ -1,0 +1,138 @@
+#!/bin/bash
+# Скрипт настройки /etc/sudoers для пользователя
+# Автор - Логинов Алексей <loginov.alex.valer@gmail.com>
+# Скрипт распространяется по лицензии GPL v.3
+
+USER0=$1
+SCRIPT=$2
+LANG=$3
+
+if [ "$LANG" = "ru" ]
+then
+   MES0="Отменить для пользователя $USER0 запуск приложений через sudo/xsudo без ввода пароля администратора?"
+   MES1="Разрешить пользователю $USER0 запускать приложения через sudo/xsudo без ввода пароля администратора?"
+   MES2="Пользователь $USER0 был добавлен в /etc/sudoers. При запуске sudo/xsudo будет запрашиваться пароль пользователя."
+   MES3="Пользователь $USER0 был удален из /etc/sudoers."
+   MES4="Пользователь $USER0 уже в /etc/sudoers, добавление не требуется."
+   MES5="Пользователя $USER0 нет в /etc/sudoers, удаление не требуется."
+   MES6="Настройка /etc/sudoers для root не требутся."
+   MES7="Вы должны быть root."
+   MES8="Требуется указать имя пользователя первым параметром."
+   MES9="Несуществующий пользователь $USER0."
+   MES10="Требуется вторым параметром указать: add2sudoers или rmfromsudoers."
+   MES11="Выбор варианта для пароля"
+   MES12="Выберите вариант с паролем PASSWD (рекомендуется) или без пароля NOPASSWD (слишком опасно):"
+   MES13="Отметка выбора"
+   MES14="Варианты выбора"
+   MES15="Дальнейшая настройка прервана"
+   MES16="Пользователь $USER0 был добавлен в /etc/sudoers. При запуске sudo/xsudo не будет запрашиваться пароль пользователя."
+else
+   MES0="You want to cancel for the user $USER0 to run applications via sudo/xsudo without entering the administrator password?"
+   MES1="Do you want to allow for the user $USER0 to run applications via sudo/xsudo without entering the administrator password?"
+   MES2="User $USER0 was added to /etc/sudoers. If to use sudo/xsudo, then password for user will be asked."
+   MES3="User $USER0 was removed from /etc/sudoers."
+   MES4="User $USER0 already in /etc/sudoers, addition is not required."
+   MES5="User $USER0 is not in /etc/sudoers, removal is not required."
+   MES6="Configure /etc/sudoers for root not really need."
+   MES7="You must be root."
+   MES8="Requires a username in the first parameter."
+   MES9="User $USER0 does not exist."
+   MES10="The second parameter is required to specify: add2sudoers or rmfromsudoers."
+   MES11="Choice of a variant for a password"
+   MES12="Choose variant with a password PASSWD (recommended) or without a password NOPASSWD (too dangerous):"
+   MES13="Marker of choice"
+   MES14="The choices"
+   MES15="Further configuration was interrupted"
+   MES16="User $USER0 was added to /etc/sudoers. If to use sudo/xsudo, then password for user will not be asked."
+fi
+
+if [ ! "$USER" = "root" ]
+then
+  zenity --info --text "$MES7"
+  exit 0
+fi
+
+if [ "$USER0" = "" ]
+then
+  zenity --info --text "$MES8"
+  exit 0
+fi
+
+if [ ! -d /home/$USER0 ]
+then
+  zenity --info --text "$MES9"
+  exit 0
+fi
+
+if [ "$USER0" = "root" ]
+then
+  zenity --info --text "$MES6"
+  exit 0
+fi
+
+if [ ! "$SCRIPT" = "add2sudoers" ] && [ ! "$SCRIPT" = "rmfromsudoers" ]
+then
+  zenity --info --text "$MES10"
+  exit 0
+fi
+
+TESTROOT=`cat /etc/sudoers|grep "$USER0 ALL=(ALL)"|grep "PASSWD:"`
+
+if [ "$SCRIPT" = "add2sudoers" ]
+then
+    if [ ! "$SCRIPT" = "rmfromsudoers" ]
+    then
+	if [ "$TESTROOT" = "" ]
+	then
+	  zenity --question --text "$MES1"
+	  if [ "$?" = "1" ]
+	  then
+	    exit 0
+	  else
+	    A=`zenity --list --radiolist --title="$MES11" --text="$MES12" --column="$MES13" --column="$MES14" TRUE PASSWD FALSE NOPASSWD`
+	    if [ ! "$A" = "PASSWD" ]
+	    then
+	      if [ ! "$A" = "NOPASSWD" ]
+	      then
+	        zenity --info --text "$MES15"
+	        exit 0
+	      fi
+	    fi
+	    if [ "$A" = "PASSWD" ]
+	    then
+	       echo "$USER0 ALL=(ALL) PASSWD: ALL" >> /etc/sudoers
+	       zenity --info --text "$MES2"
+	    else
+	       echo "$USER0 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+	       zenity --info --text "$MES16"
+	    fi
+	  fi
+	else
+	  zenity --info --text "$MES4"
+	fi
+    fi
+fi
+ 
+if [ "$SCRIPT" = "rmfromsudoers" ]
+then
+    if [ ! "$SCRIPT" = "add2sudoers" ]
+    then
+	if [ ! "$TESTROOT" = "" ]
+	then
+	  zenity --question --text "$MES0"
+	  if [ "$?" = "1" ]
+	  then
+	    exit 0
+	  else
+	    sed "/$USER0 ALL=(ALL) PASSWD: ALL/d" /etc/sudoers > /tmp/sudoers
+	    mv -f /tmp/sudoers /etc/sudoers
+	    sed "/$USER0 ALL=(ALL) NOPASSWD: ALL/d" /etc/sudoers > /tmp/sudoers
+	    mv -f /tmp/sudoers /etc/sudoers
+	    chmod 0440 /etc/sudoers
+            zenity --info --text "$MES3"
+	  fi
+	else
+	  zenity --info --text "$MES5"
+	fi 
+    fi
+fi
