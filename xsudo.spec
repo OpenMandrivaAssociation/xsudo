@@ -1,4 +1,4 @@
-Summary:	xsudo permit execute X-application with sudo
+Summary:	Permit execute X-application with sudo
 Name:		xsudo
 Version:	0.4.0
 Release:	9
