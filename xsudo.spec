@@ -1,7 +1,7 @@
 Summary:	Permit execute X-application with sudo
 Name:		xsudo
 Version:	0.4.0
-Release:	9
+Release:	10
 License:	GPLv3+
 Group:		System/Base
 Url:		http://www.mageialinux.ru
