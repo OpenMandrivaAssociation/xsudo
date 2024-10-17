@@ -4,7 +4,7 @@ Version:	0.7.0
 Release:	1
 License:	GPLv3+
 Group:		System/Base
-Url:		http://www.mageialinux.ru
+Url:		https://www.mageialinux.ru
 Source0:	%{name}
 Source1:	add2sudoers
 Source2:	rmfromsudoers
